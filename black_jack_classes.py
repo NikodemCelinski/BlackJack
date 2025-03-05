@@ -10,15 +10,13 @@
 import random
 from bj_exceptions import MovementFail 
 from subprocess import call
+from other_func import convert_to_int
 
 class Deck():
-
-
 
 	def __init__(self):
 		self.possible_figures = [2,3,4,5,6,7,8,9,10,'J','D','K','A']
 		self.cards = self.possible_figures*4
-
 
 	def shuffle(self):
 		random.shuffle(self.cards)
@@ -39,9 +37,8 @@ class Deck():
 		return top_card
 
 	def new_shuffled_deck(self):
-		self.cards = possible_figures*4
+		self.cards = self.possible_figures*4
 		self.shuffle()
-
 
 class Hand():
 	"""
@@ -128,25 +125,17 @@ class Participant():
 
 	"""
 
-	
-
 	def __init__(self):
 
 		self.is_busted = False
 		self.list_of_hands = []
 	
 
-	
-
-
-
 	def show_stats(self):
 		hand = self.list_of_hands[0]
 		print("Croupier : ")
 		print("Cards : " + str(hand.cards))
 		print('\n')
-
-
 
 	def stand(self):
 		pass
@@ -156,12 +145,9 @@ class Participant():
 			raise MovementFail('You could hit only once !!') 
 			return False
 
-
 		hand.cards.append(deck.pop_top_card())
 		hand.update_points_stats()
 		return True
-
-	
 
 	def get_initial_hand(self,deck): 
 		self.list_of_hands.append(Hand())
@@ -181,21 +167,13 @@ class Participant():
 		self.stand()
 		return True
 
-		
-
 class Player(Participant):
-
-	
-
 
 	def __init__(self):
 		self.money = 10000 
 		#self.is_busted = False
 		self.list_of_hands = []
 		self.lost = False
-	 
-
-
 
 	def show_stats(self):
 		for hand in self.list_of_hands:
@@ -211,19 +189,18 @@ class Player(Participant):
 	def make_bet(self, player_index):
 		while(True):
 
-			bet = int(input("player {} How much do you want to bet ? \n".format(player_index)))
+			bet = convert_to_int(input("player {} How much do you want to bet ? \n".format(player_index)))
 
 			if self.money < bet:
 				print ( " ERROR : You don't have this much money ! \n")
 				continue
-			elif bet == 0:
+			elif bet <= 0:
 				print("You can't bet nothing !")
 				continue
 			else:
 				self.money -= bet
 				self.list_of_hands[0].bet = bet
 				return True
-
 
 		self.money = self.money - bet
 
@@ -286,9 +263,7 @@ class Player(Participant):
 		hand.update_points_stats()
 		new_hand.update_points_stats()
 
-
 		return {self.list_of_hands[0].cards[0], self.list_of_hands[1].cards[0]}
-
 
 	def execute_move(self, choosen_move, hand, deck ):
 		if choosen_move == "hit":
@@ -306,24 +281,23 @@ class Player(Participant):
 
 		return False
 
-
-	def make_move(self, deck, hand, game): 
+	def make_move(self, deck, hand, game, test_move_str_override=''): 
 		move_str = '' # move place_holder (choosing)
-
-
 
 		while not ((move_str == 'stand') or (hand.is_busted)):
 			while True :
-				move_str = input("Your move ? \n")
-				try:
+				if (test_move_str_override != ''):
+					move_str = test_move_str_override
+				else:
+					move_str = input("Your move ? \n")
 
+				try:
 					self.execute_move(move_str,hand, deck)
 					call(['clear'])
 					print("\n")
 					game.show_table(self, hand)
 					
 					break
-
 
 				except MovementFail:
 					print("There is something wrong ! Try again... \n") 
@@ -332,13 +306,10 @@ class Player(Participant):
 		if hand.is_busted:
 			print("BUSTED !")
 
-		game.press_enter()
+		if (test_move_str_override == ''):
+			game.press_enter()
+		
 		call(['clear'])
-
-
-
-
-
 
 
 class Game():
@@ -362,7 +333,6 @@ class Game():
 			self.game_end = True
 
 			return self.all_players
-
 
 
 	def prize_for(self,player,hand):
@@ -452,12 +422,7 @@ class Game():
 			
 			lines_dict = {'players':player_labels, 'money':money_string, 'hands':hands_cards_string }
 
-
-
 			return lines_dict
-
-
-
 
 		print('\n' + 20*'*')
 		print("{:^20}".format('TABLE'))
@@ -472,7 +437,6 @@ class Game():
 
 		print('\n\n')
 
-
 	def press_enter(self):
 		any_input = input("{:^60}".format('========  PRESS ENTER  ========='))
 
@@ -481,12 +445,6 @@ class Game():
 			player.list_of_hands = []
 
 		self.croupier.list_of_hands = []
-
-
-
-
-
-
 
 
 		# NEW CLASS -->  "Game" with general rules functions

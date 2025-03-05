@@ -55,7 +55,6 @@ class DeckTest(unittest.TestCase):
 
 class HandTest(unittest.TestCase):
 	def test_update(self):
-
 		print("#"*30 + "\n" + "update_testing ..... ")
 
 		hand = black_jack_classes.Hand()
@@ -87,12 +86,7 @@ class HandTest(unittest.TestCase):
 
 		print("#"*30 + "\n")
 
-
-
 class PlayerTest(unittest.TestCase):
-
-	
-
 
 	def test_double_down(self):
 		player = black_jack_classes.Player()
@@ -138,8 +132,6 @@ class PlayerTest(unittest.TestCase):
 		hand = game.all_players[0].list_of_hands[0]
 		game.croupier = func_for_unittest.croupier_init(game, ['D',9])
 		
-		
-		
 		hand.cards = [8,8]
 
 		print ("LENGTH OF CARDS : {} \n".format(len(game.deck.cards)) )
@@ -148,7 +140,7 @@ class PlayerTest(unittest.TestCase):
 		print(hand)
 
 		print("TEST MAKE MOVE ")
-		func_output = player.make_move(game.deck, hand, game)
+		func_output = player.make_move(game.deck, hand, game, test_move_str_override="stand")
 
 
 		print("="*50)
@@ -181,8 +173,6 @@ class PlayerTest(unittest.TestCase):
 
 		print("%"*30)
 
-
-
 class GameTest(unittest.TestCase): 
 	def test_prize_for(self):
 		player_initial_money = 1000
@@ -210,13 +200,9 @@ class GameTest(unittest.TestCase):
 		game.all_players.append(player_8)
 		game.all_players.append(player_9)
 
-		player_8.make_move(deck, player_8.list_of_hands[0], game)
+		player_8.make_move(deck, player_8.list_of_hands[0], game, test_move_str_override="stand")
 
 		game.show_table(game.all_players[0], game.all_players[0].list_of_hands[0]) # Are those args different objects ? 
-
-
-
-
 
 
 if __name__ == '__main__':

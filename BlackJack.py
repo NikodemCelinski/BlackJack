@@ -7,7 +7,6 @@
 
 # file created : 12:50 | 18.09.18 
 
-
 import black_jack_classes
 
 """
@@ -15,10 +14,7 @@ This code represents logic of the Game.
 
 """
 
-
 Game = black_jack_classes.Game()
-
-
 
 
 Game.init()
